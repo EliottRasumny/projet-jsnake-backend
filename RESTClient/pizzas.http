@@ -1,0 +1,55 @@
+@baseUrl = http://localhost:3000
+
+######### NORMAL OPERATION  ###########
+
+### Login the default admin & define a request variable
+# @name admin
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"admin",
+    "password":"admin"
+}
+### get the admin token
+@adminToken = {{admin.response.body.token}}
+
+### Read all pizzas
+GET http://localhost:3000/pizzas
+
+### Read pizza identified by 2
+GET http://localhost:3000/pizzas/2
+
+
+### Create a pizza
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "title":"Magic Purple",
+    "content":"JWT, Brocolis, Olives vertes, Basilic"
+}
+
+### Update the pizza identified by 2
+PUT http://localhost:3000/pizzas/2
+Content-Type: application/json
+
+{
+    "title":"Magic Green 2"
+}
+
+### Delete pizza identified by 2
+DELETE http://localhost:3000/pizzas/2
+
+
+### Add a pizza with dangerous chars
+POST {{baseUrl}}/pizzas
+Content-Type: application/json
+
+{
+    "title":"Magic Purple XSS",
+    "content":"<img src=\"#\" onerror=\"alert('You have been hacked !')\">"
+}
+
+### Logout the user
+GET {{baseUrl}}/auths/logout
