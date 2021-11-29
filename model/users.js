@@ -135,6 +135,7 @@ class Users {
     serialize(this.jsonDbPath, items);
     return updateditem;
   }
+  
 
   /**
    * Authenticate a user and generate a token if the user credentials are OK
