@@ -15,6 +15,8 @@ const defaultItems = [
   {
     username: "admin",
     password: "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa",//"admin",
+    bestScoreSingle: 0,
+    bestScoreCoop: 0,
   },
 ];
 // hash default password
@@ -90,6 +92,8 @@ class Users {
     const newitem = {
       username: body.username,
       password: hashedPassword,
+      bestScoreSingle: 0,
+      bestScoreCoop: 0, 
     };
     items.push(newitem);
     serialize(this.jsonDbPath, items);
