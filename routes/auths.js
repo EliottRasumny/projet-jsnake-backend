@@ -81,4 +81,9 @@ router.get("/logout", async function (req, res, next) {
   return res.status(200).end();
 });
 
+
+router.get("/", async function (req, res, next) {
+  return res.json("test");
+});
+
 module.exports = router;
