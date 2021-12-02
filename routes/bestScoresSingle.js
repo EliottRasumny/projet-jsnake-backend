@@ -22,4 +22,22 @@ router.get("/:id", function (req, res) {
   return res.json(bestScoresSingle);
 });
 
+// POST /bestscoressingle/{score}/{id} : Add the best score "score" for the player's id
+router.post("/bestscoressingle/:score/:id", authorize, function (req, res) {
+  console.log("POST /bestscoressingle");
+
+  // Send an error code '400 Bad request' if the body parameters are not valid
+  if (
+    !req.body ||
+    (req.body.hasOwnProperty("score") && req.body.title.length === 0) ||
+    (req.body.hasOwnProperty("id") && req.body.content.length === 0)
+  )
+    return res.status(400).end();
+
+  const score = bestScoresSingleModel.addOne(req.body);
+
+  return res.json(score);
+});
+
+
 module.exports = router;
