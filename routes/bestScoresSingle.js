@@ -1,12 +1,12 @@
 var express = require("express");
-const { Pizzas } = require("../model/bestScoresSingle");
+const { BestScoresSingle } = require("../model/bestScoresSingle");
 const { authorizeFromCookie } = require("../utils/authorize");
 
 var router = express.Router();
 const bestScoresSingleModel = new BestScoresSingle();
 
 // GET /bestScoresSingle : read all the bestScoresSingle from the menu
-router.get("/", function (req, res) {
+router.get("/bestscoressingle", function (req, res) {
   console.log("GET /bestscoressingle");
   return res.json(bestScoresSingleModel.getAll());
 });
