@@ -5,7 +5,7 @@ const size = 10;
 
 const jsonDbPath = __dirname + "/../data/bestscoressingle.json";
 
-// Default pizza menu
+// Default scores
 const defaultScores = [
   {
     idPlayer: 1,
@@ -38,15 +38,15 @@ class BestScoresSingle {
 
   /**
    * Returns the scores identified by player's id
-   * @param {number} id - id of the pizza to find
-   * @returns {object} the pizza found or undefined if the id does not lead to a pizza
+   * @param {number} id - id of the player's score
+   * @returns {object} the score found or undefined if the id does not lead to a score
    */
   getOne(id) {
-    const pizzas = parse(this.jsonDbPath, this.defaultPizzas);
-    const foundIndex = pizzas.findIndex((pizza) => pizza.id == id);
+    const scores = parse(this.jsonDbPath, this.defaultScores);
+    const foundIndex = scores.findIndex((score) => score.id == id);
     if (foundIndex < 0) return;
 
-    return pizzas[foundIndex];
+    return scores[foundIndex];
   }
 
   /**
@@ -58,7 +58,7 @@ class BestScoresSingle {
   addOne(body) {
     const scores = parse(this.jsonDbPath, this.defaultScores);
 
-    // add new pizza to the menu : escape the title & content in order to protect agains XSS attacks    
+    // add new score to the scoreboard : escape the id & score in order to protect agains XSS attacks    
     const newScore = {
       idPlayer: escape(body.id),
       score: escape(body.score),
@@ -83,39 +83,39 @@ class BestScoresSingle {
   }
 
   /**
-   * Delete a pizza in the DB and return the deleted pizza
-   * @param {number} id - id of the pizza to be deleted
-   * @returns {object} the pizza that was deleted or undefined if the delete operation failed
+   * Delete a score in the DB and return the deleted score
+   * @param {number} id - id of the player's score to be deleted
+   * @returns {object} the score that was deleted or undefined if the delete operation failed
    */
   deleteOne(id) {
-    const pizzas = parse(this.jsonDbPath, this.defaultPizzas);
-    const foundIndex = pizzas.findIndex((pizza) => pizza.id == id);
+    const scores = parse(this.jsonDbPath, this.defaultPizzas);
+    const foundIndex = scores.findIndex((score) => score.id == id);
     if (foundIndex < 0) return;
-    const itemRemoved = pizzas.splice(foundIndex, 1);
-    serialize(this.jsonDbPath, pizzas);
+    const itemRemoved = scores.splice(foundIndex, 1);
+    serialize(this.jsonDbPath, scores);
 
     return itemRemoved[0];
   }
 
   /**
-   * Update a pizza in the DB and return the updated pizza
-   * @param {number} id - id of the pizza to be updated
+   * Update a score in the DB and return the updated score
+   * @param {number} id - id of the player's score to be updated
    * @param {object} body - it contains all the data to be updated
-   * @returns {object} the updated pizza or undefined if the update operation failed
+   * @returns {object} the updated score or undefined if the update operation failed
    */
   updateOne(id, body) {
-    const pizzas = parse(this.jsonDbPath, this.defaultPizzas);
-    const foundIndex = pizzas.findIndex((pizza) => pizza.id == id);
+    const scores = parse(this.jsonDbPath, this.defaultPizzas);
+    const foundIndex = scores.findIndex((score) => score.id == id);
     if (foundIndex < 0) return;
-    // create a new object based on the existing pizza - prior to modification -
+    // create a new object based on the existing score - prior to modification -
     // and the properties requested to be updated (those in the body of the request)
     // use of the spread operator to create a shallow copy and repl
-    const updatedPizza = { ...pizzas[foundIndex], ...body };
-    // replace the pizza found at index : (or use splice)
-    pizzas[foundIndex] = updatedPizza;
+    const updatedScore = { ...scores[foundIndex], ...body };
+    // replace the score found at index : (or use splice)
+    scores[foundIndex] = updatedScore;
 
-    serialize(this.jsonDbPath, pizzas);
-    return updatedPizza;
+    serialize(this.jsonDbPath, scores);
+    return updatedScore;
   }
 }
 
