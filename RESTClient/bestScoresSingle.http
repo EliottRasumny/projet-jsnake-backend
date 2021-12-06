@@ -1,0 +1,11 @@
+### Read all scores
+GET http://localhost:3000/bestscoressingle
+
+### Add a best score for user 1
+POST http://localhost:3000/bestscoressingle/
+Content-Type: application/json
+
+{
+    "score":"100",
+    "id":"1"
+}
