@@ -86,14 +86,13 @@ class BestScoresCoop {
     }
     var i = 0;
     var scoreAjoute = false;
-    scores.forEach(score => {
-      if(newScore.score >= score){
-        scores.splice(i, 0, newScore);
+    for(j = 0; j < scores.length; j++){
+      if(newScore.score >= scores[j]){
+        scores.splice(j, 0, newScore);
         scoreAjoute = true;
         break;
       } 
-      i++;
-    });
+    }
     if(scores.length === size && scoreAjoute) scores.pop;
     serialize(this.jsonDbPath, scores);
     return newScore;

@@ -4,6 +4,7 @@ const jwtSecret = "ilovemypizza!";
 const { Users } = require("../model/users");
 const userModel = new Users();
 
+
 /**
  * Authorize middleware to be used on the routes to be secured/
  * This middleware authorize only user that have a valid JWT

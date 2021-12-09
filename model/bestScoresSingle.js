@@ -32,7 +32,8 @@ class BestScoresSingle {
    * @returns {Array} Array of scores
    */
   getAll() {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
+    console.log("get all");
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
     return scores;
   }
 
@@ -42,8 +43,9 @@ class BestScoresSingle {
    * @returns {object} the score found or undefined if the id does not lead to a score
    */
   getOne(id) {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
-    const foundIndex = scores.findIndex((score) => score.id == id);
+    console.log("id");
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
+    const foundIndex = scores.findIndex((score) => score.idPlayer == id);
     if (foundIndex < 0) return;
 
     return scores[foundIndex];
@@ -67,20 +69,21 @@ class BestScoresSingle {
       // the player is already in the table => we delete it
       scores.deleteOne(body.id);
     }
-    var i = 0;
+
+    var j;
     var scoreAjoute = false;
-    scores.forEach(score => {
-      if(newScore.score >= score){
-        scores.splice(i, 0, newScore);
+    for(j = 0; j < scores.length; j++){
+      if(newScore.score >= scores[j]){
+        scores.splice(j, 0, newScore);
         scoreAjoute = true;
         break;
       } 
-      i++;
-    });
+    }
     if(scores.length === size && scoreAjoute) scores.pop;
     serialize(this.jsonDbPath, scores);
     return newScore;
   }
+
 
   /**
    * Delete a score in the DB and return the deleted score
@@ -89,7 +92,7 @@ class BestScoresSingle {
    */
   deleteOne(id) {
     const scores = parse(this.jsonDbPath, this.defaultPizzas);
-    const foundIndex = scores.findIndex((score) => score.id == id);
+    const foundIndex = scores.findIndex((score) => score.idPlayer == id);
     if (foundIndex < 0) return;
     const itemRemoved = scores.splice(foundIndex, 1);
     serialize(this.jsonDbPath, scores);
@@ -105,7 +108,7 @@ class BestScoresSingle {
    */
   updateOne(id, body) {
     const scores = parse(this.jsonDbPath, this.defaultPizzas);
-    const foundIndex = scores.findIndex((score) => score.id == id);
+    const foundIndex = scores.findIndex((score) => score.idPlayer == id);
     if (foundIndex < 0) return;
     // create a new object based on the existing score - prior to modification -
     // and the properties requested to be updated (those in the body of the request)

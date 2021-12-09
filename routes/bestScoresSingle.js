@@ -1,6 +1,7 @@
 var express = require("express");
 const { BestScoresSingle } = require("../model/bestScoresSingle");
 const { authorizeFromCookie } = require("../utils/authorize");
+const { authorize } = require("../utils/authorize");
 
 var router = express.Router();
 const bestScoresSingleModel = new BestScoresSingle();
@@ -12,18 +13,21 @@ router.get("/bestscoressingle", function (req, res) {
 });
 
 // GET /bestscoressingle/{id} : Get a bestScoresSingle from its id in the menu
-router.get("/:id", function (req, res) {
+router.get("/bestscoressingle/:id", function (req, res) {
   console.log(`GET /bestscoressingle/${req.params.id}`);
 
   const bestScoresSingle = bestScoresSingleModel.getOne(req.params.id);
   // Send an error code '404 Not Found' if the bestScoresSingle was not found
-  if (!bestScoresSingle) return res.status(404).end();
+  if (!bestScoresSingle){
+    console.log("not found");
+    return res.status(404).end();
+  } 
 
   return res.json(bestScoresSingle);
 });
 
 // POST /bestscoressingle/{score}/{id} : Add the best score "score" for the player's id
-router.post("/bestscoressingle/:score/:id", authorize, function (req, res) {
+router.post("/bestscoressingle/", authorize, function (req, res) {
   console.log("POST /bestscoressingle");
 
   // Send an error code '400 Bad request' if the body parameters are not valid

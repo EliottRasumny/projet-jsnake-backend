@@ -3,6 +3,8 @@ var logger = require("morgan");
 var cookieSession = require("cookie-session");
 
 var authsRouter = require("./routes/auths");
+var singleRouter = require("./routes/bestScoresSingle");
+var coopRouter = require("./routes/bestScoresCoop");
 
 var app = express();
 
@@ -23,5 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/auths", authsRouter);
+app.use("/single", singleRouter);
+app.use("/coop", coopRouter);
 
 module.exports = app;
