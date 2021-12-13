@@ -1,7 +1,6 @@
 var express = require("express");
 const { BestScoresSingle } = require("../model/bestScoresSingle");
 const { authorizeFromCookie } = require("../utils/authorize");
-const { authorize } = require("../utils/authorize");
 
 var router = express.Router();
 const bestScoresSingleModel = new BestScoresSingle();
