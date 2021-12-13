@@ -39,8 +39,10 @@ const authorize = (req, res, next) => {
  * and which are still present in the list of potential authenticated users
  */
  const authorizeFromCookie = (req, res, next) => {
-  let token = req.session.token;
+  let token = req.session.token1;
+  console.log("token", token)
   if (!token) return res.status(401).end();
+  console.log("token", token)
 
   try {
     const decoded = jwt.verify(token, jwtSecret);

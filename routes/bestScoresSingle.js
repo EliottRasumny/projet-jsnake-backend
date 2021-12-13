@@ -27,14 +27,15 @@ router.get("/bestscoressingle/:id", function (req, res) {
 });
 
 // POST /bestscoressingle/{score}/{id} : Add the best score "score" for the player's id
-router.post("/bestscoressingle/", authorize, function (req, res) {
+router.post("/bestscoressingle/", authorizeFromCookie, function (req, res) {
   console.log("POST /bestscoressingle");
+  console.log("test...")
 
   // Send an error code '400 Bad request' if the body parameters are not valid
   if (
     !req.body ||
-    (req.body.hasOwnProperty("score") && req.body.title.length === 0) ||
-    (req.body.hasOwnProperty("id") && req.body.content.length === 0)
+    (req.body.hasOwnProperty("score") && req.body.score.length === 0) ||
+    (req.body.hasOwnProperty("id") && req.body.id.length === 0)
   )
     return res.status(400).end();
 

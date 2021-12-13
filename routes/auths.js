@@ -21,8 +21,8 @@ router.post("/register", async function (req, res, next) {
   if (!authenticatedUser) return res.status(409).end();
 
   // Create the session data (to be put into a cookie)
-  req.session.username = authenticatedUser.username;
-  req.session.token = authenticatedUser.token;
+  req.session.username1 = authenticatedUser.username;
+  req.session.token1 = authenticatedUser.token;
 
   return res.json({ username: authenticatedUser.username });
 });
