@@ -13,6 +13,7 @@ const saltRounds = 10;
 // Default data
 const defaultItems = [
   {
+    id : 1,
     username: "admin",
     password: "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa",//"admin",
     bestScoreSingle: 0,
@@ -88,8 +89,9 @@ class Users {
     // hash the password (async call)
     const hashedPassword = await bcrypt.hash(body.password, saltRounds);
     // add new item to the menu
-
+    const userId = this.getNextId();
     const newitem = {
+      id : userId,
       username: body.username,
       password: hashedPassword,
       bestScoreSingle: 0,
