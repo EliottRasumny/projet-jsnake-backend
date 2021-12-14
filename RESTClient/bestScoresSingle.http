@@ -21,3 +21,9 @@ Content-Type: application/json
     "score":"100",
     "id":"1"
 }
+
+
+
+
+###
+GET http://localhost:3000/coop/bestscorescoop

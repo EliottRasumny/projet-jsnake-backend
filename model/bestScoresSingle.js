@@ -58,7 +58,7 @@ class BestScoresSingle {
    */
 
   addOne(body) {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
 
     // add new score to the scoreboard : escape the id & score in order to protect agains XSS attacks    
     const newScore = {
@@ -91,7 +91,7 @@ class BestScoresSingle {
    * @returns {object} the score that was deleted or undefined if the delete operation failed
    */
   deleteOne(username) {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
     const foundIndex = scores.findIndex((score) => score.username == id);
     if (foundIndex < 0) return;
     const itemRemoved = scores.splice(foundIndex, 1);
@@ -107,7 +107,7 @@ class BestScoresSingle {
    * @returns {object} the updated score or undefined if the update operation failed
    */
   updateOne(username, body) {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
     const foundIndex = scores.findIndex((score) => score.username == username);
     if (foundIndex < 0) return;
     // create a new object based on the existing score - prior to modification -

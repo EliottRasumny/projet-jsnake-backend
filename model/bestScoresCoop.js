@@ -35,7 +35,8 @@ class BestScoresCoop {
    * @returns {Array} Array of scores
    */
   getAll() {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
+    console.log(scores);
     return scores;
   }
 
@@ -46,7 +47,7 @@ class BestScoresCoop {
    * @returns {object} the score found or undefined if the id does not lead to a score
    */
   getOne(username1, username2) {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
+    const scores = parse(this.jsonDbPath, this.defaultdefaultBestScoresCoopcores);
     var foundIndex = scores.findIndex((score) => score.username1 == username1 || score.username2 == username2);
     if (foundIndex < 0) {
       foundIndex = scores.findIndex((score) => score.username2 == username1 || score.username1 == username2);
@@ -62,7 +63,7 @@ class BestScoresCoop {
    */
 
   addOne(body) {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
    
     const newScore = {
       username1: escape(body.id1),
@@ -95,7 +96,7 @@ class BestScoresCoop {
    * @returns {object} the score that was deleted or undefined if the delete operation failed
    */
   deleteOne(username1, username2) {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
     const foundIndex = scores.findIndex((score) => score.username1 == username1 && score.username2 == username2);
     if (foundIndex < 0) {
       foundIndex = scores.findIndex((score) => score.username2 == username1 || score.username1 == username2);
@@ -115,7 +116,7 @@ class BestScoresCoop {
    * @returns {object} the updated score or undefined if the update operation failed
    */
   updateOne(username1, username2, body) {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
     const foundIndex = scores.findIndex((score) => score.idPlayer1 == id && score.idPlayer2 == id);
     if (foundIndex < 0) {
       foundIndex = scores.findIndex((score) => score.username2 == username1 || score.username1 == username2);
