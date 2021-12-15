@@ -96,6 +96,15 @@ class Users {
       password: hashedPassword,
       bestScoreSingle: 0,
       bestScoreCoop: 0, 
+      keyUp1: "Z",
+      keyRight1: "D",
+      keyDown1: "S",
+      keyLeft1: "Q",
+      keyUp2: "Z",
+      keyRight2: "D",
+      keyDown2: "S",
+      keyLeft2: "Q",
+
     };
     items.push(newitem);
     serialize(this.jsonDbPath, items);
