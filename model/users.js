@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const { parse, serialize } = require("../utils/json");
 //var escape = require("escape-html");
-const jwtSecret = "ilovemypizza!";
+const jwtSecret = "ilovemysnake!";
 const LIFETIME_JWT = 24 * 60 * 60 * 1000; // in ms : 24 * 60 * 60 * 1000 = 24h
 
 const jsonDbPath = __dirname + "/../data/users.json";
@@ -20,12 +20,7 @@ const defaultItems = [
     bestScoreCoop: 0,
   },
 ];
-// hash default password
-/*
-bcrypt.hash(defaultItems[0].password, saltRounds).then((hashedPassword) => {
-  defaultItems[0].password = hashedPassword;
-  console.log("Hash of default password:", hashedPassword);
-});*/
+
 
 class Users {
   constructor(dbPath = jsonDbPath, items = defaultItems) {
@@ -157,6 +152,7 @@ class Users {
    */
 
   async login(username, password) {
+    console.log("login");
     const userFound = this.getOneByUsername(username);
     if (!userFound){
       console.log("user not found");
