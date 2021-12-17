@@ -100,10 +100,10 @@ class Users {
       keyRight1: "D",
       keyDown1: "S",
       keyLeft1: "Q",
-      keyUp2: "Z",
-      keyRight2: "D",
-      keyDown2: "S",
-      keyLeft2: "Q",
+      keyUp2: "O",
+      keyRight2: "M",
+      keyDown2: "L",
+      keyLeft2: "K",
 
     };
     items.push(newitem);

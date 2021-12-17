@@ -24,7 +24,17 @@ router.post("/register", async function (req, res, next) {
   req.session.username1 = authenticatedUser.username;
   req.session.token1 = authenticatedUser.token;
 
-  return res.json({ username: authenticatedUser.username });
+  return res.json({ 
+    username: authenticatedUser.username,
+    keyUp1: "Z",
+    keyRight1: "D",
+    keyDown1: "S",
+    keyLeft1: "Q",
+    keyUp2: "Z",
+    keyRight2: "D",
+    keyDown2: "S",
+    keyLeft2: "Q",
+  });
 });
 
 /* login the first user : POST /auths/login1 */
@@ -48,7 +58,17 @@ router.post("/login1", async function (req, res, next) {
   req.session.username1 = authenticatedUser.username;
   req.session.token1 = authenticatedUser.token;
 
-  return res.json({ username1: authenticatedUser.username });
+  return res.json({
+    username1: authenticatedUser.username,    
+    keyUp1: "Z", //TODO
+    keyRight1: "D",
+    keyDown1: "S",
+    keyLeft1: "Q",
+    keyUp2: "Z",
+    keyRight2: "D",
+    keyDown2: "S",
+    keyLeft2: "Q",
+  });
 });
 
 /* login the second user : POST /auths/login2 */
@@ -82,8 +102,30 @@ router.get("/logout", async function (req, res, next) {
 });
 
 
-router.get("/", async function (req, res, next) {
-  return res.json("test");
+// GET /user/{id} : Get a user from its id in the menu
+router.get("/user/:id", function (req, res) {
+  console.log(`GET /user/${req.params.id}`);
+
+  const user = userModel.getOne(req.params.id);
+  // Send an error code '404 Not Found' if the user was not found
+  if (!user){
+    console.log("not found");
+    return res.status(404).end();
+  } 
+
+  return res.json(user);
 });
+
+// PUT /user/{id} : update a user at id
+// This shall be authorized only to connected users
+router.put("/:id", function (req, res) {
+  console.log(`PUT /user/${req.params.id}`);
+
+  const user = userModel.updateOne(req.params.id, req.body);
+  // Send an error code 'Not Found' if the user was not found :
+  if (!user) return res.status(404).end();
+  return res.json(user);
+});
+
 
 module.exports = router;

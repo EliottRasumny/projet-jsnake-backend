@@ -42,3 +42,10 @@ Content-Type: application/json
 
 {
 }
+
+PUT http://localhost:3000/auths/user/1
+Content-Type: application/json
+
+{
+    "keyUp1":"KeyY"
+}
