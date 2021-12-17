@@ -12,13 +12,7 @@ const saltRounds = 10;
 
 // Default data
 const defaultItems = [
-  {
-    id : 1,
-    username: "admin",
-    password: "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa",//"admin",
-    bestScoreSingle: 0,
-    bestScoreCoop: 0,
-  },
+
 ];
 
 
@@ -86,7 +80,7 @@ class Users {
     // add new item to the menu
     const userId = this.getNextId();
     const newitem = {
-      id : userId,
+      id: userId,
       username: body.username,
       password: hashedPassword,
       bestScoreSingle: 0,
@@ -167,7 +161,18 @@ class Users {
     } 
 
     const authenticatedUser = {
-      username: username,
+      id: userFound.id,
+      username: userFound.username,
+      bestScoreSingle: userFound.bestScoreSingle,
+      bestScoreCoop: userFound.bestScoreCoop, 
+      keyUp1: userFound.keyUp1,
+      keyRight1: userFound.keyRight1,
+      keyDown1: userFound.keyDown1,
+      keyLeft1: userFound.keyLeft1,
+      keyUp2: userFound.keyUp2,
+      keyRight2: userFound.keyRight2,
+      keyDown2: userFound.keyDown2,
+      keyLeft2: userFound.keyLeft2,
       token: "Future signed token",
     };
 
@@ -197,7 +202,18 @@ class Users {
     const newUser = this.addOne({ username: username, password: password });
 
     const authenticatedUser = {
-      username: username,
+      id: newUser.id,
+      username: newUser.username,
+      bestScoreSingle: newUser.bestScoreSingle,
+      bestScoreCoop: newUser.bestScoreCoop, 
+      keyUp1: newUser.keyUp1,
+      keyRight1: newUser.keyRight1,
+      keyDown1: newUser.keyDown1,
+      keyLeft1: newUser.keyLeft1,
+      keyUp2: newUser.keyUp2,
+      keyRight2: newUser.keyRight2,
+      keyDown2: newUser.keyDown2,
+      keyLeft2: newUser.keyLeft2,
       token: "Future signed token",
     };
 

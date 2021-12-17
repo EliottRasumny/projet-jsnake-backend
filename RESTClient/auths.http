@@ -19,12 +19,12 @@ Content-Type: application/json
 }
 
 ### Create the manager user
-POST http://localhost:3000/auths/register
+POST http://localhost:3000/auths/register1
 Content-Type: application/json
 
 {
-    "username":"manager",
-    "password":"manager"
+    "username":"aaaa",
+    "password":"aaaa"
 }
 
 ### Login the manager
@@ -32,8 +32,8 @@ POST http://localhost:3000/auths/login1
 Content-Type: application/json
 
 {
-    "username":"manager",
-    "password":"manager"
+    "username":"aaaa",
+    "password":"aaaa"
 }
 
 ### Logout users
@@ -43,6 +43,7 @@ Content-Type: application/json
 {
 }
 
+### Change key user
 PUT http://localhost:3000/auths/user/1
 Content-Type: application/json
 

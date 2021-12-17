@@ -25,6 +25,7 @@ router.post("/register1", async function (req, res, next) {
   req.session.token1 = authenticatedUser.token;
 
   return res.json({ 
+    id: authenticatedUser.id,
     username: authenticatedUser.username,
     keyUp1: "Z",
     keyRight1: "D",
@@ -34,6 +35,7 @@ router.post("/register1", async function (req, res, next) {
     keyRight2: "D",
     keyDown2: "S",
     keyLeft2: "Q",
+
   });
 });
 
@@ -76,24 +78,27 @@ router.post("/login1", async function (req, res, next) {
     req.body.username,
     req.body.password
   );
-  console.log(authenticatedUser.body);
   // Error code '401 Unauthorized' if the user could not be authenticated
   if (!authenticatedUser) return res.status(401).end();
 
   // Create the session data (to be put into a cookie)
+  //req.session.id = authenticatedUser.id;
   req.session.username1 = authenticatedUser.username;
   req.session.token1 = authenticatedUser.token;
 
   return res.json({
-    username1: authenticatedUser.username,    
-    keyUp1: "Z", //TODO
-    keyRight1: "D",
-    keyDown1: "S",
-    keyLeft1: "Q",
-    keyUp2: "Z",
-    keyRight2: "D",
-    keyDown2: "S",
-    keyLeft2: "Q",
+    id: authenticatedUser.id,
+    username1: authenticatedUser.username,
+    bestScoreSingle: authenticatedUser.bestScoreSingle,
+    bestScoreCoop: authenticatedUser.bestScoreCoop, 
+    keyUp1: authenticatedUser.keyUp1,
+    keyRight1: authenticatedUser.keyRight1,
+    keyDown1: authenticatedUser.keyDown1,
+    keyLeft1: authenticatedUser.keyLeft1,
+    keyUp2: authenticatedUser.keyUp2,
+    keyRight2: authenticatedUser.keyRight2,
+    keyDown2: authenticatedUser.keyDown2,
+    keyLeft2: authenticatedUser.keyLeft2,
   });
 });
 
@@ -130,22 +135,22 @@ router.get("/logout", async function (req, res, next) {
 
 // GET /user/{id} : Get a user from its id in the menu
 router.get("/user/:id", function (req, res) {
-  console.log(`GET /user/${req.params.id}`);
+  console.log(`GET /auths/user/${req.params.id}`);
 
   const user = userModel.getOne(req.params.id);
   // Send an error code '404 Not Found' if the user was not found
   if (!user){
     console.log("not found");
     return res.status(404).end();
-  } 
+  }
 
   return res.json(user);
 });
 
 // PUT /user/{id} : update a user at id
 // This shall be authorized only to connected users
-router.put("/:id", function (req, res) {
-  console.log(`PUT /user/${req.params.id}`);
+router.put("/user/:id", function (req, res) {
+  console.log(`PUT /auths/user/${req.params.id}`);
 
   const user = userModel.updateOne(req.params.id, req.body);
   // Send an error code 'Not Found' if the user was not found :
