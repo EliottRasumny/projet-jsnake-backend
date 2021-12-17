@@ -4,7 +4,7 @@ const { Users } = require("../model/users");
 const userModel = new Users();
 
 /* Register a user : POST /auths/register */
-router.post("/register", async function (req, res, next) {
+router.post("/register1", async function (req, res, next) {
   // Send an error code '400 Bad request' if the body parameters are not valid
   if (
     !req.body ||
@@ -21,14 +21,49 @@ router.post("/register", async function (req, res, next) {
   if (!authenticatedUser) return res.status(409).end();
 
   // Create the session data (to be put into a cookie)
-  req.session.username = authenticatedUser.username;
-  req.session.token = authenticatedUser.token;
+  req.session.username1 = authenticatedUser.username;
+  req.session.token1 = authenticatedUser.token;
+
+  return res.json({ 
+    username: authenticatedUser.username,
+    keyUp1: "Z",
+    keyRight1: "D",
+    keyDown1: "S",
+    keyLeft1: "Q",
+    keyUp2: "Z",
+    keyRight2: "D",
+    keyDown2: "S",
+    keyLeft2: "Q",
+  });
+});
+
+/* Register a user : POST /auths/register */
+router.post("/register2", async function (req, res, next) {
+  // Send an error code '400 Bad request' if the body parameters are not valid
+  if (
+    !req.body ||
+    (req.body.hasOwnProperty("username") && req.body.username.length === 0) ||
+    (req.body.hasOwnProperty("password") && req.body.password.length === 0)
+  )
+    return res.status(400).end();
+
+  const authenticatedUser = await userModel.register(
+    req.body.username,
+    req.body.password
+  );
+  // Error code '409 Conflict' if the username already exists
+  if (!authenticatedUser) return res.status(409).end();
+
+  // Create the session data (to be put into a cookie)
+  req.session.username2 = authenticatedUser.username;
+  req.session.token2 = authenticatedUser.token;
 
   return res.json({ username: authenticatedUser.username });
 });
 
 /* login the first user : POST /auths/login1 */
 router.post("/login1", async function (req, res, next) {
+  console.log("test");
   // Send an error code '400 Bad request' if the body parameters are not valid
   if (
     !req.body ||
@@ -41,6 +76,7 @@ router.post("/login1", async function (req, res, next) {
     req.body.username,
     req.body.password
   );
+  console.log(authenticatedUser.body);
   // Error code '401 Unauthorized' if the user could not be authenticated
   if (!authenticatedUser) return res.status(401).end();
 
@@ -48,7 +84,17 @@ router.post("/login1", async function (req, res, next) {
   req.session.username1 = authenticatedUser.username;
   req.session.token1 = authenticatedUser.token;
 
-  return res.json({ username1: authenticatedUser.username });
+  return res.json({
+    username1: authenticatedUser.username,    
+    keyUp1: "Z", //TODO
+    keyRight1: "D",
+    keyDown1: "S",
+    keyLeft1: "Q",
+    keyUp2: "Z",
+    keyRight2: "D",
+    keyDown2: "S",
+    keyLeft2: "Q",
+  });
 });
 
 /* login the second user : POST /auths/login2 */
@@ -82,8 +128,30 @@ router.get("/logout", async function (req, res, next) {
 });
 
 
-router.get("/", async function (req, res, next) {
-  return res.json("test");
+// GET /user/{id} : Get a user from its id in the menu
+router.get("/user/:id", function (req, res) {
+  console.log(`GET /user/${req.params.id}`);
+
+  const user = userModel.getOne(req.params.id);
+  // Send an error code '404 Not Found' if the user was not found
+  if (!user){
+    console.log("not found");
+    return res.status(404).end();
+  } 
+
+  return res.json(user);
 });
+
+// PUT /user/{id} : update a user at id
+// This shall be authorized only to connected users
+router.put("/:id", function (req, res) {
+  console.log(`PUT /user/${req.params.id}`);
+
+  const user = userModel.updateOne(req.params.id, req.body);
+  // Send an error code 'Not Found' if the user was not found :
+  if (!user) return res.status(404).end();
+  return res.json(user);
+});
+
 
 module.exports = router;

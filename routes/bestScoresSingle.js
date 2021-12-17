@@ -12,25 +12,29 @@ router.get("/bestscoressingle", function (req, res) {
 });
 
 // GET /bestscoressingle/{id} : Get a bestScoresSingle from its id in the menu
-router.get("/:id", function (req, res) {
+router.get("/bestscoressingle/:id", function (req, res) {
   console.log(`GET /bestscoressingle/${req.params.id}`);
 
   const bestScoresSingle = bestScoresSingleModel.getOne(req.params.id);
   // Send an error code '404 Not Found' if the bestScoresSingle was not found
-  if (!bestScoresSingle) return res.status(404).end();
+  if (!bestScoresSingle){
+    console.log("not found");
+    return res.status(404).end();
+  } 
 
   return res.json(bestScoresSingle);
 });
 
 // POST /bestscoressingle/{score}/{id} : Add the best score "score" for the player's id
-router.post("/bestscoressingle/:score/:id", authorize, function (req, res) {
+router.post("/bestscoressingle/", authorizeFromCookie, function (req, res) {
   console.log("POST /bestscoressingle");
+  console.log("test...")
 
   // Send an error code '400 Bad request' if the body parameters are not valid
   if (
     !req.body ||
-    (req.body.hasOwnProperty("score") && req.body.title.length === 0) ||
-    (req.body.hasOwnProperty("id") && req.body.content.length === 0)
+    (req.body.hasOwnProperty("score") && req.body.score.length === 0) ||
+    (req.body.hasOwnProperty("id") && req.body.id.length === 0)
   )
     return res.status(400).end();
 

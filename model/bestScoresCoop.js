@@ -8,18 +8,18 @@ const jsonDbPath = __dirname + "/../data/bestscorescoop.json";
 // Default pizza menu
 const defaultScores = [
   {
-    idPlayer1: 1,
-    idPlayer2: 2,
+    username1: "admin",
+    username2: "zoe",
     score: 600,
   },
   {
-    idPlayer1: 2,
-    idPlayer2: 4,
+    username1: "zoe",
+    username2: "eliott",
     score: 500,
   },
   {
-    idPlayer1: 3,
-    idPlayer2: 1,
+    username1: "eliott",
+    username2: "admin",
     score: 400,
   },
 ];
@@ -35,33 +35,24 @@ class BestScoresCoop {
    * @returns {Array} Array of scores
    */
   getAll() {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
+    console.log(scores);
     return scores;
   }
 
   /**
-   * Returns the scores identified by player's id
-   * @param {number} id - id of the pizza to find
-   * @returns {object} the pizza found or undefined if the id does not lead to a pizza
+   * Returns the scores identified by player's username
+   * @param {string} username1 - username of the user to find
+   * @param {string} username2 - username of the user to find
+   * @returns {object} the score found or undefined if the id does not lead to a score
    */
-  getOne(id) {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
-    const foundIndex = scores.findIndex((score) => score.idPlayer1 == id || score.idPlayer2 == id);
-    if (foundIndex < 0) return;
-
-    return scores[foundIndex];
-  }
-
-  /**
-   * Returns the scores identified by player's id
-   * @param {number} id - id of the pizza to find
-   * @returns {object} the pizza found or undefined if the id does not lead to a pizza
-   */
-   getOneByIds(id1, id2) {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
-    const foundIndex = scores.findIndex((score) => score.idPlayer1 == id && score.idPlayer2 == id);
-    if (foundIndex < 0) return;
-
+  getOne(username1, username2) {
+    const scores = parse(this.jsonDbPath, this.defaultdefaultBestScoresCoopcores);
+    var foundIndex = scores.findIndex((score) => score.username1 == username1 || score.username2 == username2);
+    if (foundIndex < 0) {
+      foundIndex = scores.findIndex((score) => score.username2 == username1 || score.username1 == username2);
+      if (foundIndex < 0) return 0;
+    }
     return scores[foundIndex];
   }
 
@@ -72,28 +63,27 @@ class BestScoresCoop {
    */
 
   addOne(body) {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
    
     const newScore = {
-      idPlayer1: escape(body.id1),
-      idPlayer2: escape(body.id2),
+      username1: escape(body.id1),
+      username2: escape(body.id2),
       score: escape(body.score),
     };
 
-    if(this.getOneByIds(newScore.idPlayer1, newScore.idPlayer2)){
+    if(this.getOneByIds(newScore.username1, newScore.username2)){
       // the player is already in the table => we delete it
-      scores.deleteOne(newScore.idPlayer1, newScore.idPlayer2);
+      scores.deleteOne(newScore.username1, newScore.username2);
     }
     var i = 0;
     var scoreAjoute = false;
-    scores.forEach(score => {
-      if(newScore.score >= score){
-        scores.splice(i, 0, newScore);
+    for(j = 0; j < scores.length; j++){
+      if(newScore.score >= scores[j]){
+        scores.splice(j, 0, newScore);
         scoreAjoute = true;
         break;
       } 
-      i++;
-    });
+    }
     if(scores.length === size && scoreAjoute) scores.pop;
     serialize(this.jsonDbPath, scores);
     return newScore;
@@ -101,14 +91,17 @@ class BestScoresCoop {
 
   /**
    * Delete a score in the DB and return the deleted score
-   * @param {number} id1 - id of the first player
-   * @param {number} id2 - id of the second player
+   * @param {string} username1 - username of the first player
+   * @param {string} username2 - username of the second player
    * @returns {object} the score that was deleted or undefined if the delete operation failed
    */
-  deleteOne(id1, id2) {
-    const scores = parse(this.jsonDbPath, this.defaultPizzas);
-    const foundIndex = scores.findIndex((score) => score.idPlayer1 == id && score.idPlayer2 == id);
-    if (foundIndex < 0) return;
+  deleteOne(username1, username2) {
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
+    const foundIndex = scores.findIndex((score) => score.username1 == username1 && score.username2 == username2);
+    if (foundIndex < 0) {
+      foundIndex = scores.findIndex((score) => score.username2 == username1 || score.username1 == username2);
+      if (foundIndex < 0) return 0;
+    }
     const itemRemoved = scores.splice(foundIndex, 1);
     serialize(this.jsonDbPath, scores);
 
@@ -117,15 +110,18 @@ class BestScoresCoop {
 
   /**
    * Update a score a in the DB and return the updated score
-   * @param {number} id1 - id of the first player
-   * @param {number} id2 - id of the second player
+   * @param {string} username1 - username of the first player
+   * @param {string} unsername2 - username of the second player
    * @param {object} body - it contains all the data to be updated
    * @returns {object} the updated score or undefined if the update operation failed
    */
-  updateOne(id1, id2, body) {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
+  updateOne(username1, username2, body) {
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
     const foundIndex = scores.findIndex((score) => score.idPlayer1 == id && score.idPlayer2 == id);
-    if (foundIndex < 0) return;
+    if (foundIndex < 0) {
+      foundIndex = scores.findIndex((score) => score.username2 == username1 || score.username1 == username2);
+      if (foundIndex < 0) return 0;
+    }
     // create a new object based on the existing score - prior to modification -
     // and the properties requested to be updated (those in the body of the request)
     // use of the spread operator to create a shallow copy and repl

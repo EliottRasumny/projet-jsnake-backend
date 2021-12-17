@@ -11,11 +11,11 @@ router.get("/bestscorescoop", function (req, res) {
   return res.json(bestScoresCoopModel.getAll());
 });
 
-// GET /bestscorescoop/{id1}/{id2} : Get a bestScoresSingle from players' ids
-router.get("/bestscorescoop/:id1/:id2", function (req, res) {
-  console.log(`GET /bestscorescoop/${req.params.id1}/${req.params.id2}`);
+// GET /bestscorescoop/{username1}/{username2} : Get a bestScoresSingle from players' ids
+router.get("/bestscorescoop/:username1/:username2", function (req, res) {
+  console.log(`GET /bestscorescoop/${req.params.username1}/${req.params.username2}`);
 
-  const bestScoreCoop = bestScoresCoopModel.getOneByIds(req.params.id1, req.params.id2);
+  const bestScoreCoop = bestScoresCoopModel.getOneByIds(req.params.username1, req.params.username2);
   // Send an error code '404 Not Found' if the bestScoresCoop was not found
   if (!bestScoreCoop) return res.status(404).end();
 

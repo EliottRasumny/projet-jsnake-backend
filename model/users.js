@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const { parse, serialize } = require("../utils/json");
 //var escape = require("escape-html");
-const jwtSecret = "ilovemypizza!";
+const jwtSecret = "ilovemysnake!";
 const LIFETIME_JWT = 24 * 60 * 60 * 1000; // in ms : 24 * 60 * 60 * 1000 = 24h
 
 const jsonDbPath = __dirname + "/../data/users.json";
@@ -13,18 +13,14 @@ const saltRounds = 10;
 // Default data
 const defaultItems = [
   {
+    id : 1,
     username: "admin",
     password: "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa",//"admin",
     bestScoreSingle: 0,
     bestScoreCoop: 0,
   },
 ];
-// hash default password
-/*
-bcrypt.hash(defaultItems[0].password, saltRounds).then((hashedPassword) => {
-  defaultItems[0].password = hashedPassword;
-  console.log("Hash of default password:", hashedPassword);
-});*/
+
 
 class Users {
   constructor(dbPath = jsonDbPath, items = defaultItems) {
@@ -88,12 +84,22 @@ class Users {
     // hash the password (async call)
     const hashedPassword = await bcrypt.hash(body.password, saltRounds);
     // add new item to the menu
-
+    const userId = this.getNextId();
     const newitem = {
+      id : userId,
       username: body.username,
       password: hashedPassword,
       bestScoreSingle: 0,
       bestScoreCoop: 0, 
+      keyUp1: "Z",
+      keyRight1: "D",
+      keyDown1: "S",
+      keyLeft1: "Q",
+      keyUp2: "O",
+      keyRight2: "M",
+      keyDown2: "L",
+      keyLeft2: "K",
+
     };
     items.push(newitem);
     serialize(this.jsonDbPath, items);
@@ -146,11 +152,19 @@ class Users {
    */
 
   async login(username, password) {
+    console.log("login");
     const userFound = this.getOneByUsername(username);
-    if (!userFound) return;
+    if (!userFound){
+      console.log("user not found");
+      return;
+    } 
     // checked hash of passwords
     const match = await bcrypt.compare(password, userFound.password);
-    if (!match) return;
+    console.log("login");
+    if (!match){
+      console.log("Not the correct password");
+      return;
+    } 
 
     const authenticatedUser = {
       username: username,

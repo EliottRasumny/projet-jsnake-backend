@@ -8,15 +8,15 @@ const jsonDbPath = __dirname + "/../data/bestscoressingle.json";
 // Default scores
 const defaultScores = [
   {
-    idPlayer: 1,
+    username: "admin",
     score: 600,
   },
   {
-    idPlayer: 2,
+    username: "zoe",
     score: 500,
   },
   {
-    idPlayer: 3,
+    username: "eliott",
     score: 400,
   },
 ];
@@ -32,18 +32,20 @@ class BestScoresSingle {
    * @returns {Array} Array of scores
    */
   getAll() {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
+    console.log("get all");
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
     return scores;
   }
 
   /**
-   * Returns the scores identified by player's id
-   * @param {number} id - id of the player's score
+   * Returns the scores identified by player's username
+   * @param {number} username - username of the user's score
    * @returns {object} the score found or undefined if the id does not lead to a score
    */
-  getOne(id) {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
-    const foundIndex = scores.findIndex((score) => score.id == id);
+  getOne(username) {
+    console.log("username");
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
+    const foundIndex = scores.findIndex((score) => score.username == username);
     if (foundIndex < 0) return;
 
     return scores[foundIndex];
@@ -56,40 +58,41 @@ class BestScoresSingle {
    */
 
   addOne(body) {
-    const scores = parse(this.jsonDbPath, this.defaultScores);
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
 
     // add new score to the scoreboard : escape the id & score in order to protect agains XSS attacks    
     const newScore = {
-      idPlayer: escape(body.id),
+      username: escape(body.username),
       score: escape(body.score),
     };
-    if(this.getOne(body.id)){
+    if(this.getOne(body.username)){
       // the player is already in the table => we delete it
-      scores.deleteOne(body.id);
+      scores.deleteOne(body.username);
     }
-    var i = 0;
+
+    var j;
     var scoreAjoute = false;
-    scores.forEach(score => {
-      if(newScore.score >= score){
-        scores.splice(i, 0, newScore);
+    for(j = 0; j < scores.length; j++){
+      if(newScore.score >= scores[j]){
+        scores.splice(j, 0, newScore);
         scoreAjoute = true;
         break;
       } 
-      i++;
-    });
+    }
     if(scores.length === size && scoreAjoute) scores.pop;
     serialize(this.jsonDbPath, scores);
     return newScore;
   }
 
+
   /**
    * Delete a score in the DB and return the deleted score
-   * @param {number} id - id of the player's score to be deleted
+   * @param {string} username - username of the player's score to be deleted
    * @returns {object} the score that was deleted or undefined if the delete operation failed
    */
-  deleteOne(id) {
-    const scores = parse(this.jsonDbPath, this.defaultPizzas);
-    const foundIndex = scores.findIndex((score) => score.id == id);
+  deleteOne(username) {
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
+    const foundIndex = scores.findIndex((score) => score.username == id);
     if (foundIndex < 0) return;
     const itemRemoved = scores.splice(foundIndex, 1);
     serialize(this.jsonDbPath, scores);
@@ -99,13 +102,13 @@ class BestScoresSingle {
 
   /**
    * Update a score in the DB and return the updated score
-   * @param {number} id - id of the player's score to be updated
+   * @param {string} username - username of the player's score to be updated
    * @param {object} body - it contains all the data to be updated
    * @returns {object} the updated score or undefined if the update operation failed
    */
-  updateOne(id, body) {
-    const scores = parse(this.jsonDbPath, this.defaultPizzas);
-    const foundIndex = scores.findIndex((score) => score.id == id);
+  updateOne(username, body) {
+    const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
+    const foundIndex = scores.findIndex((score) => score.username == username);
     if (foundIndex < 0) return;
     // create a new object based on the existing score - prior to modification -
     // and the properties requested to be updated (those in the body of the request)
