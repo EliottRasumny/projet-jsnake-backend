@@ -158,10 +158,17 @@ class Users {
 
   async login(username, password) {
     const userFound = this.getOneByUsername(username);
-    if (!userFound) return;
+    if (!userFound){
+      console.log("user not found");
+      return;
+    } 
     // checked hash of passwords
     const match = await bcrypt.compare(password, userFound.password);
-    if (!match) return;
+    console.log("login");
+    if (!match){
+      console.log("Not the correct password");
+      return;
+    } 
 
     const authenticatedUser = {
       username: username,
