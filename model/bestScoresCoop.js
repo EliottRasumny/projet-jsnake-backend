@@ -10,17 +10,17 @@ const defaultScores = [
   {
     username1: "admin",
     username2: "zoe",
-    score: 600,
+    score: 6,
   },
   {
     username1: "zoe",
     username2: "eliott",
-    score: 500,
+    score: 5,
   },
   {
     username1: "eliott",
     username2: "admin",
-    score: 400,
+    score: 4,
   },
 ];
 
@@ -66,16 +66,16 @@ class BestScoresCoop {
     const scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
    
     const newScore = {
-      username1: escape(body.id1),
-      username2: escape(body.id2),
+      username1: escape(body.username1),
+      username2: escape(body.username2),
       score: escape(body.score),
     };
 
-    if(this.getOneByIds(newScore.username1, newScore.username2)){
+    if(this.getOne(newScore.username1, newScore.username2)){
       // the player is already in the table => we delete it
       scores.deleteOne(newScore.username1, newScore.username2);
     }
-    var i = 0;
+    var j;
     var scoreAjoute = false;
     for(j = 0; j < scores.length; j++){
       if(newScore.score >= scores[j]){
@@ -83,6 +83,9 @@ class BestScoresCoop {
         scoreAjoute = true;
         break;
       } 
+    }
+    if(j<=10 && !scoreAjoute){
+      scores.push(newScore);
     }
     if(scores.length === size && scoreAjoute) scores.pop;
     serialize(this.jsonDbPath, scores);

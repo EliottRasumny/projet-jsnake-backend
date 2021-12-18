@@ -9,15 +9,15 @@ const jsonDbPath = __dirname + "/../data/bestscoressingle.json";
 const defaultScores = [
   {
     username: "admin",
-    score: 600,
+    score: 6,
   },
   {
     username: "zoe",
-    score: 500,
+    score: 5,
   },
   {
     username: "eliott",
-    score: 400,
+    score: 4,
   },
 ];
 
@@ -56,7 +56,6 @@ class BestScoresSingle {
    */
 
   addOne(body) {
-    console.log("AddOne BestScoreSingle : ", body.score);
     const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
 
     // add new score to the scoreboard : escape the id & score in order to protect agains XSS attacks    
@@ -72,9 +71,6 @@ class BestScoresSingle {
     var j;
     var scoreAjoute = false;
     for(j = 0; j < scores.length; j++){
-      console.log(newScore.score);
-      console.log(scores[j]);
-
       if(newScore.score >= scores[j].score){
         scores.splice(j, 0, newScore);
         scoreAjoute = true;
@@ -84,7 +80,6 @@ class BestScoresSingle {
     if(j<=10 && !scoreAjoute){
       scores.push(newScore);
     }
-    console.log(scoreAjoute);
     if(scores.length === size && scoreAjoute) scores.pop;
     serialize(this.jsonDbPath, scores);
     return newScore;
