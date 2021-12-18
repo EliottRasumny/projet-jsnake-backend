@@ -58,6 +58,7 @@ class BestScoresSingle {
    */
 
   addOne(body) {
+    console.log("AddOne BestScoreSingle : ", body.score);
     const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
 
     // add new score to the scoreboard : escape the id & score in order to protect agains XSS attacks    
@@ -73,12 +74,16 @@ class BestScoresSingle {
     var j;
     var scoreAjoute = false;
     for(j = 0; j < scores.length; j++){
-      if(newScore.score >= scores[j]){
+      console.log(newScore.score);
+      console.log(scores[j]);
+
+      if(newScore.score >= scores[j].score){
         scores.splice(j, 0, newScore);
         scoreAjoute = true;
         break;
       } 
     }
+    console.log(scoreAjoute);
     if(scores.length === size && scoreAjoute) scores.pop;
     serialize(this.jsonDbPath, scores);
     return newScore;

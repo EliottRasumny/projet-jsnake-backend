@@ -25,11 +25,8 @@ router.get("/bestscoressingle/:id", function (req, res) {
   return res.json(bestScoresSingle);
 });
 
-// POST /bestscoressingle/{score}/{id} : Add the best score "score" for the player's id
-router.post("/bestscoressingle/", authorizeFromCookie, function (req, res) {
-  console.log("POST /bestscoressingle");
-  console.log("test...")
-
+// POST /bestscoressingle/ : Add the best score "score" for the player's id
+router.post("/bestscoressingle/", function (req, res) {
   // Send an error code '400 Bad request' if the body parameters are not valid
   if (
     !req.body ||
