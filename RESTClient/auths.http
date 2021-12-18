@@ -23,7 +23,17 @@ POST http://localhost:3000/auths/register1
 Content-Type: application/json
 
 {
-    "username":"testBestScore",
+    "username":"testBestScoresss",
+    "password":"aaaa"
+}
+
+
+### Create the manager user
+POST http://localhost:3000/auths/register1
+Content-Type: application/json
+
+{
+    "username":"testBestScores",
     "password":"aaaa",
      "bestScoreSingle": "10",
     "bestScoreCoop": "10"

@@ -11,13 +11,11 @@ router.post("/register1", async function (req, res, next) {
     (req.body.hasOwnProperty("username") && req.body.username.length === 0) ||
     (req.body.hasOwnProperty("password") && req.body.password.length === 0)
   ) return res.status(400).end();
-
   var bestScoreSingle = 0;
   if(req.body.hasOwnProperty("bestScoreSingle")) bestScoreSingle = req.body.bestScoreSingle;
 
   var bestScoreCoop = 0;
   if(req.body.hasOwnProperty("bestScoreCoop")) bestScoreCoop = req.body.bestScoreCoop;
-
   const authenticatedUser = await userModel.register(
     req.body.username,
     req.body.password, 

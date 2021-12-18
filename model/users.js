@@ -74,7 +74,6 @@ class Users {
 
   async addOne(body) {
     const items = parse(this.jsonDbPath, this.defaultItems);
-
     // hash the password (async call)
     const hashedPassword = await bcrypt.hash(body.password, saltRounds);
     // add new item to the menu
@@ -83,8 +82,8 @@ class Users {
       id: userId,
       username: body.username,
       password: hashedPassword,
-      bestScoreSingle: body.bestScoreSingle,
-      bestScoreCoop: body.bestScoreCoop, 
+      bestScoreSingle: 0,
+      bestScoreCoop: 0, 
       keyUp1: "Z",
       keyRight1: "D",
       keyDown1: "S",
@@ -146,16 +145,13 @@ class Users {
    */
 
   async login(username, password) {
-    console.log("login");
     const userFound = this.getOneByUsername(username);
     if (!userFound){
-      console.log("user not found");
       return;
     } 
     // checked hash of passwords
     const match = await bcrypt.compare(password, userFound.password);
     if (!match){
-      console.log("Not the correct password");
       return;
     } 
 
@@ -194,17 +190,16 @@ class Users {
    * be created (if username already in use)
    */
 
-  register(username, password, bestScoreSingle, bestScoreCoop) {
+  async register(username, password) {
     const userFound = this.getOneByUsername(username);
     if (userFound) return;
 
-    const newUser = this.addOne({ username: username, password: password, bestScoreSingle: bestScoreSingle, bestScoreCoop: bestScoreCoop });
-
+    const newUser = await this.addOne({ username: username, password: password});
     const authenticatedUser = {
       id: newUser.id,
       username: newUser.username,
-      bestScoreSingle: newUser.bestScoreSingle,
-      bestScoreCoop: newUser.bestScoreCoop, 
+      bestScoreSingle: 0,
+      bestScoreCoop: 0, 
       keyUp1: newUser.keyUp1,
       keyRight1: newUser.keyRight1,
       keyDown1: newUser.keyDown1,
