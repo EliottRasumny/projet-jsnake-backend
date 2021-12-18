@@ -78,10 +78,7 @@ router.post("/login1", async function (req, res, next) {
     req.body.username,
     req.body.password
   );
-<<<<<<< HEAD
-=======
-  console.log(authenticatedUser);
->>>>>>> README file completed
+
   // Error code '401 Unauthorized' if the user could not be authenticated
   if (!authenticatedUser) return res.status(401).end();
 
