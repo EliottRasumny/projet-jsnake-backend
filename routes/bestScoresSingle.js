@@ -31,7 +31,7 @@ router.post("/bestscoressingle/", function (req, res) {
   if (
     !req.body ||
     (req.body.hasOwnProperty("score") && req.body.score.length === 0) ||
-    (req.body.hasOwnProperty("id") && req.body.id.length === 0)
+    (req.body.hasOwnProperty("username") && req.body.username.length === 0)
   )
     return res.status(400).end();
 

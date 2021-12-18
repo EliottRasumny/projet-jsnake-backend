@@ -81,6 +81,9 @@ class BestScoresSingle {
         break;
       } 
     }
+    if(j<=10 && !scoreAjoute){
+      scores.push(newScore);
+    }
     console.log(scoreAjoute);
     if(scores.length === size && scoreAjoute) scores.pop;
     serialize(this.jsonDbPath, scores);
