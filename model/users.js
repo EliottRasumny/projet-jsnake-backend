@@ -154,7 +154,6 @@ class Users {
     } 
     // checked hash of passwords
     const match = await bcrypt.compare(password, userFound.password);
-    console.log(match);
     if (!match){
       console.log("Not the correct password");
       return;

@@ -32,7 +32,6 @@ class BestScoresSingle {
    * @returns {Array} Array of scores
    */
   getAll() {
-    console.log("get all");
     const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
     return scores;
   }
@@ -43,7 +42,6 @@ class BestScoresSingle {
    * @returns {object} the score found or undefined if the id does not lead to a score
    */
   getOne(username) {
-    console.log("username");
     const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
     const foundIndex = scores.findIndex((score) => score.username == username);
     if (foundIndex < 0) return;

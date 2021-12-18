@@ -65,7 +65,6 @@ router.post("/register2", async function (req, res, next) {
 
 /* login the first user : POST /auths/login1 */
 router.post("/login1", async function (req, res, next) {
-  console.log("login1");
   // Send an error code '400 Bad request' if the body parameters are not valid
   if (
     !req.body ||
@@ -105,7 +104,6 @@ router.post("/login1", async function (req, res, next) {
 
 /* login the second user : POST /auths/login2 */
 router.post("/login2", async function (req, res, next) {
-  console.log("login2");
   // Send an error code '400 Bad request' if the body parameters are not valid
   if (
     !req.body ||
