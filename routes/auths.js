@@ -10,12 +10,19 @@ router.post("/register1", async function (req, res, next) {
     !req.body ||
     (req.body.hasOwnProperty("username") && req.body.username.length === 0) ||
     (req.body.hasOwnProperty("password") && req.body.password.length === 0)
-  )
-    return res.status(400).end();
+  ) return res.status(400).end();
+
+  var bestScoreSingle = 0;
+  if(req.body.hasOwnProperty("bestScoreSingle")) bestScoreSingle = req.body.bestScoreSingle;
+
+  var bestScoreCoop = 0;
+  if(req.body.hasOwnProperty("bestScoreCoop")) bestScoreCoop = req.body.bestScoreCoop;
 
   const authenticatedUser = await userModel.register(
     req.body.username,
-    req.body.password
+    req.body.password, 
+    bestScoreSingle,
+    bestScoreCoop
   );
   // Error code '409 Conflict' if the username already exists
   if (!authenticatedUser) return res.status(409).end();
@@ -27,6 +34,8 @@ router.post("/register1", async function (req, res, next) {
   return res.json({ 
     id: authenticatedUser.id,
     username: authenticatedUser.username,
+    bestScoreSingle: authenticatedUser.bestScoreSingle,
+    bestScoreCoop: authenticatedUser.bestScoreCoop,
     keyUp1: "Z",
     keyRight1: "D",
     keyDown1: "S",
