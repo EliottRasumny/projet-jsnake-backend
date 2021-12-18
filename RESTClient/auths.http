@@ -1,7 +1,7 @@
 ######### NORMAL OPERATION  ###########
 
 ### Login the default admin
-POST http://localhost:3000/auths/login2
+POST http://localhost:3000/auths/login1
 Content-Type: application/json
 
 {
