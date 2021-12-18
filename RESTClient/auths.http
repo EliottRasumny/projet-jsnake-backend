@@ -1,7 +1,7 @@
 ######### NORMAL OPERATION  ###########
 
 ### Login the default admin
-POST http://localhost:3000/auths/login2
+POST http://localhost:3000/auths/login1
 Content-Type: application/json
 
 {
@@ -23,8 +23,10 @@ POST http://localhost:3000/auths/register1
 Content-Type: application/json
 
 {
-    "username":"aaaa",
-    "password":"aaaa"
+    "username":"testBestScore",
+    "password":"aaaa",
+     "bestScoreSingle": "10",
+    "bestScoreCoop": "10"
 }
 
 ### Login the manager

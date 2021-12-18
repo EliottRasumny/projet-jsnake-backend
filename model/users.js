@@ -83,8 +83,8 @@ class Users {
       id: userId,
       username: body.username,
       password: hashedPassword,
-      bestScoreSingle: 0,
-      bestScoreCoop: 0, 
+      bestScoreSingle: body.bestScoreSingle,
+      bestScoreCoop: body.bestScoreCoop, 
       keyUp1: "Z",
       keyRight1: "D",
       keyDown1: "S",
@@ -154,7 +154,6 @@ class Users {
     } 
     // checked hash of passwords
     const match = await bcrypt.compare(password, userFound.password);
-    console.log("login");
     if (!match){
       console.log("Not the correct password");
       return;
@@ -195,11 +194,11 @@ class Users {
    * be created (if username already in use)
    */
 
-  register(username, password) {
+  register(username, password, bestScoreSingle, bestScoreCoop) {
     const userFound = this.getOneByUsername(username);
     if (userFound) return;
 
-    const newUser = this.addOne({ username: username, password: password });
+    const newUser = this.addOne({ username: username, password: password, bestScoreSingle: bestScoreSingle, bestScoreCoop: bestScoreCoop });
 
     const authenticatedUser = {
       id: newUser.id,
