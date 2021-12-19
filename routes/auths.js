@@ -5,6 +5,7 @@ const userModel = new Users();
 
 /* Register a user : POST /auths/register */
 router.post("/register1", async function (req, res, next) {
+  console.log("register1");
   // Send an error code '400 Bad request' if the body parameters are not valid
   if (
     !req.body ||
@@ -22,6 +23,7 @@ router.post("/register1", async function (req, res, next) {
     bestScoreSingle,
     bestScoreCoop
   );
+  console.log(authenticatedUser);
   // Error code '409 Conflict' if the username already exists
   if (!authenticatedUser) return res.status(409).end();
 
@@ -84,7 +86,7 @@ router.post("/login1", async function (req, res, next) {
     req.body.username,
     req.body.password
   );
-
+    console.log(authenticatedUser);
   // Error code '401 Unauthorized' if the user could not be authenticated
   if (!authenticatedUser) return res.status(401).end();
 

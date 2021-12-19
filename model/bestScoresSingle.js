@@ -55,7 +55,7 @@ class BestScoresSingle {
    * @returns {object} the score that was created (with id)
    */
 
-  addOne(body) {
+  async addOne(body) {
     const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
 
     // add new score to the scoreboard : escape the id & score in order to protect agains XSS attacks    

@@ -2,6 +2,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const { parse, serialize } = require("../utils/json");
+const { use } = require("../routes/auths");
 //var escape = require("escape-html");
 const jwtSecret = "ilovemysnake!";
 const LIFETIME_JWT = 24 * 60 * 60 * 1000; // in ms : 24 * 60 * 60 * 1000 = 24h
@@ -58,11 +59,12 @@ class Users {
    * @param {string} username - username of the item to find
    * @returns {object} the item found or undefined if the username does not lead to a item
    */
-  getOneByUsername(username) {
+  async getOneByUsername(username) {
     const items = parse(this.jsonDbPath, this.defaultItems);
-    const foundIndex = items.findIndex((item) => item.username == username);
+    const foundIndex = await items.findIndex((item) => item.username == username);
+    console.log(foundIndex);
     if (foundIndex < 0) return;
-
+    console.log(items[foundIndex]);
     return items[foundIndex];
   }
 
@@ -145,7 +147,9 @@ class Users {
    */
 
   async login(username, password) {
-    const userFound = this.getOneByUsername(username);
+    console.log("login");
+    const userFound = await this.getOneByUsername(username);
+    console.log(userFound);
     if (!userFound){
       return;
     } 
@@ -191,9 +195,10 @@ class Users {
    */
 
   async register(username, password) {
-    const userFound = this.getOneByUsername(username);
+    const userFound = await this.getOneByUsername(username);
+    console.log("user",userFound);
     if (userFound) return;
-
+    console.log("user",userFound);
     const newUser = await this.addOne({ username: username, password: password});
     const authenticatedUser = {
       id: newUser.id,
