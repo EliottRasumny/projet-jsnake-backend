@@ -73,7 +73,7 @@ class BestScoresSingle {
     var j;
     var scoreAjoute = false;
     for(j = 0; j < scores.length; j++){
-      if(newScore.score >= scores[j].score){
+      if(newScore.score > scores[j].score){
         scores.splice(j, 0, newScore);
         scoreAjoute = true;
         break;

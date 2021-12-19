@@ -47,12 +47,14 @@ class BestScoresCoop {
    * @returns {object} the score found or undefined if the id does not lead to a score
    */
   async getOne(username1, username2) {
+    console.log("On passe dans getOne");
     const scores = parse(this.jsonDbPath, this.defaultdefaultBestScoresCoopcores);
     var foundIndex = scores.findIndex((score) => score.username1 == username1 || score.username2 == username2);
     if (foundIndex < 0) {
       foundIndex = scores.findIndex((score) => score.username2 == username1 || score.username1 == username2);
-      if (foundIndex < 0) return 0;
+      if (foundIndex < 0) return;
     }
+    console.log(" getOne : ",scores[foundIndex]);
     return scores[foundIndex];
   }
 
@@ -63,6 +65,7 @@ class BestScoresCoop {
    */
 
   async addOne(body) {
+    console.log("On passe dans addOne");
     var scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
    
     const newScore = {
@@ -73,13 +76,13 @@ class BestScoresCoop {
 
     if(await this.getOne(newScore.username1, newScore.username2)){
       // the player is already in the table => we delete it
-      this.deleteOne(newScore.username1, newScore.username2);
+      await this.deleteOne(newScore.username1, newScore.username2);
       scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
     }
     var j;
     var scoreAjoute = false;
     for(j = 0; j < scores.length; j++){
-      if(newScore.score >= scores[j]){
+      if(newScore.score > scores[j].score){
         scores.splice(j, 0, newScore);
         scoreAjoute = true;
         break;
@@ -90,6 +93,7 @@ class BestScoresCoop {
     }
     if(scores.length === size && scoreAjoute) scores.pop;
     serialize(this.jsonDbPath, scores);
+    console.log(" addOne : ", newScore);
     return newScore;
   }
 
@@ -100,14 +104,22 @@ class BestScoresCoop {
    * @returns {object} the score that was deleted or undefined if the delete operation failed
    */
   async deleteOne(username1, username2) {
+    console.log("On passe dans deleteOne");
+
     const scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
     const foundIndex = scores.findIndex((score) => score.username1 == username1 && score.username2 == username2);
     if (foundIndex < 0) {
+      console.log("1er index : ",foundIndex);
       foundIndex = scores.findIndex((score) => score.username2 == username1 || score.username1 == username2);
-      if (foundIndex < 0) return 0;
+      if (foundIndex < 0) {
+        console.log("2e index : ",foundIndex);
+        return;
+      }  
     }
     const itemRemoved = scores.splice(foundIndex, 1);
     serialize(this.jsonDbPath, scores);
+
+    console.log(" deleteOne : ", itemRemoved[0]);
 
     return itemRemoved[0];
   }
@@ -121,10 +133,10 @@ class BestScoresCoop {
    */
   updateOne(username1, username2, body) {
     const scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
-    const foundIndex = scores.findIndex((score) => score.idPlayer1 == id && score.idPlayer2 == id);
+    const foundIndex = scores.findIndex((score) => score.username1 == username1 && score.username2 == username2);
     if (foundIndex < 0) {
       foundIndex = scores.findIndex((score) => score.username2 == username1 || score.username1 == username2);
-      if (foundIndex < 0) return 0;
+      if (foundIndex < 0) return;
     }
     // create a new object based on the existing score - prior to modification -
     // and the properties requested to be updated (those in the body of the request)
