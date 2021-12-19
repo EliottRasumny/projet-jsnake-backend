@@ -46,7 +46,7 @@ class BestScoresCoop {
    * @param {string} username2 - username of the user to find
    * @returns {object} the score found or undefined if the id does not lead to a score
    */
-  getOne(username1, username2) {
+  async getOne(username1, username2) {
     const scores = parse(this.jsonDbPath, this.defaultdefaultBestScoresCoopcores);
     var foundIndex = scores.findIndex((score) => score.username1 == username1 || score.username2 == username2);
     if (foundIndex < 0) {
@@ -62,8 +62,8 @@ class BestScoresCoop {
    * @returns {object} the score that was created (with id)
    */
 
-  addOne(body) {
-    const scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
+  async addOne(body) {
+    var scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
    
     const newScore = {
       username1: escape(body.username1),
@@ -71,9 +71,10 @@ class BestScoresCoop {
       score: escape(body.score),
     };
 
-    if(this.getOne(newScore.username1, newScore.username2)){
+    if(await this.getOne(newScore.username1, newScore.username2)){
       // the player is already in the table => we delete it
-      scores.deleteOne(newScore.username1, newScore.username2);
+      this.deleteOne(newScore.username1, newScore.username2);
+      scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
     }
     var j;
     var scoreAjoute = false;
@@ -98,7 +99,7 @@ class BestScoresCoop {
    * @param {string} username2 - username of the second player
    * @returns {object} the score that was deleted or undefined if the delete operation failed
    */
-  deleteOne(username1, username2) {
+  async deleteOne(username1, username2) {
     const scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
     const foundIndex = scores.findIndex((score) => score.username1 == username1 && score.username2 == username2);
     if (foundIndex < 0) {

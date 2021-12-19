@@ -41,7 +41,7 @@ class BestScoresSingle {
    * @param {number} username - username of the user's score
    * @returns {object} the score found or undefined if the id does not lead to a score
    */
-  getOne(username) {
+  async getOne(username) {
     const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
     const foundIndex = scores.findIndex((score) => score.username == username);
     if (foundIndex < 0) return;
@@ -56,16 +56,18 @@ class BestScoresSingle {
    */
 
   async addOne(body) {
-    const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
+    var scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
 
     // add new score to the scoreboard : escape the id & score in order to protect agains XSS attacks    
     const newScore = {
       username: escape(body.username),
       score: escape(body.score),
     };
-    if(this.getOne(body.username)){
+    console.log(scores);
+    if(await this.getOne(body.username)){
       // the player is already in the table => we delete it
-      scores.deleteOne(body.username);
+      await this.deleteOne(newScore.username);
+      scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
     }
 
     var j;
@@ -77,6 +79,7 @@ class BestScoresSingle {
         break;
       } 
     }
+    console.log(scoreAjoute);
     if(j<=10 && !scoreAjoute){
       scores.push(newScore);
     }
@@ -91,11 +94,12 @@ class BestScoresSingle {
    * @param {string} username - username of the player's score to be deleted
    * @returns {object} the score that was deleted or undefined if the delete operation failed
    */
-  deleteOne(username) {
+  async deleteOne(username) {
     const scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
-    const foundIndex = scores.findIndex((score) => score.username == id);
+    const foundIndex = scores.findIndex((score) => score.username == username);
     if (foundIndex < 0) return;
     const itemRemoved = scores.splice(foundIndex, 1);
+    console.log(itemRemoved);
     serialize(this.jsonDbPath, scores);
 
     return itemRemoved[0];

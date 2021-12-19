@@ -11,7 +11,6 @@ const fs = require("fs");
 function parse(filePath, defaultArray = []) {
   if (!fs.existsSync(filePath)) return defaultArray;
   let fileData = fs.readFileSync(filePath);
-  console.log(fileData);
   try {
     // parse() Throws a SyntaxError exception if the string to parse is not valid JSON.
     return JSON.parse(fileData);
