@@ -63,7 +63,6 @@ class BestScoresSingle {
       username: escape(body.username),
       score: escape(body.score),
     };
-    console.log(scores);
     if(await this.getOne(body.username)){
       // the player is already in the table => we delete it
       await this.deleteOne(newScore.username);
@@ -79,7 +78,6 @@ class BestScoresSingle {
         break;
       } 
     }
-    console.log(scoreAjoute);
     if(j<=10 && !scoreAjoute){
       scores.push(newScore);
     }
@@ -99,7 +97,6 @@ class BestScoresSingle {
     const foundIndex = scores.findIndex((score) => score.username == username);
     if (foundIndex < 0) return;
     const itemRemoved = scores.splice(foundIndex, 1);
-    console.log(itemRemoved);
     serialize(this.jsonDbPath, scores);
 
     return itemRemoved[0];

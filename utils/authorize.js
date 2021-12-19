@@ -11,9 +11,7 @@ const userModel = new Users();
  */
  const authorizeFromCookie = (req, res, next) => {
   let token = req.session.token1;
-  console.log("token", token)
   if (!token) return res.status(401).end();
-  console.log("token", token)
 
   try {
     const decoded = jwt.verify(token, jwtSecret);

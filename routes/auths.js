@@ -5,7 +5,6 @@ const userModel = new Users();
 
 /* Register a user : POST /auths/register */
 router.post("/register1", async function (req, res, next) {
-  console.log("register1");
   // Send an error code '400 Bad request' if the body parameters are not valid
   if (
     !req.body ||
@@ -23,7 +22,6 @@ router.post("/register1", async function (req, res, next) {
     bestScoreSingle,
     bestScoreCoop
   );
-  console.log(authenticatedUser);
   // Error code '409 Conflict' if the username already exists
   if (!authenticatedUser) return res.status(409).end();
 
@@ -86,7 +84,6 @@ router.post("/login1", async function (req, res, next) {
     req.body.username,
     req.body.password
   );
-    console.log(authenticatedUser);
   // Error code '401 Unauthorized' if the user could not be authenticated
   if (!authenticatedUser) return res.status(401).end();
 
@@ -144,12 +141,10 @@ router.get("/logout", async function (req, res, next) {
 
 // GET /user/{id} : Get a user from its id in the menu
 router.get("/user/:id", function (req, res) {
-  console.log(`GET /auths/user/${req.params.id}`);
 
   const user = userModel.getOne(req.params.id);
   // Send an error code '404 Not Found' if the user was not found
   if (!user){
-    console.log("not found");
     return res.status(404).end();
   }
 
@@ -159,7 +154,6 @@ router.get("/user/:id", function (req, res) {
 // PUT /user/{id} : update a user at id
 // This shall be authorized only to connected users
 router.put("/user/:id", function (req, res) {
-  console.log(`PUT /auths/user/${req.params.id}`);
 
   const user = userModel.updateOne(req.params.id, req.body);
   // Send an error code 'Not Found' if the user was not found :

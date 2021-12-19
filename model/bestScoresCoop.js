@@ -36,7 +36,6 @@ class BestScoresCoop {
    */
   getAll() {
     const scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
-    console.log(scores);
     return scores;
   }
 

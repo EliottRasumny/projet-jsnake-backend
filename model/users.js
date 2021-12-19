@@ -62,9 +62,7 @@ class Users {
   async getOneByUsername(username) {
     const items = parse(this.jsonDbPath, this.defaultItems);
     const foundIndex = await items.findIndex((item) => item.username == username);
-    console.log(foundIndex);
     if (foundIndex < 0) return;
-    console.log(items[foundIndex]);
     return items[foundIndex];
   }
 
@@ -147,9 +145,7 @@ class Users {
    */
 
   async login(username, password) {
-    console.log("login");
     const userFound = await this.getOneByUsername(username);
-    console.log(userFound);
     if (!userFound){
       return;
     } 
@@ -196,9 +192,7 @@ class Users {
 
   async register(username, password) {
     const userFound = await this.getOneByUsername(username);
-    console.log("user",userFound);
     if (userFound) return;
-    console.log("user",userFound);
     const newUser = await this.addOne({ username: username, password: password});
     const authenticatedUser = {
       id: newUser.id,
