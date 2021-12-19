@@ -63,7 +63,8 @@ class BestScoresSingle {
       username: escape(body.username),
       score: escape(body.score),
     };
-    if(await this.getOne(body.username)){
+
+    if(await this.getOne(newScore.username)){
       // the player is already in the table => we delete it
       await this.deleteOne(newScore.username);
       scores = parse(this.jsonDbPath, this.defaultBestScoresSingle);
@@ -72,13 +73,13 @@ class BestScoresSingle {
     var j;
     var scoreAjoute = false;
     for(j = 0; j < scores.length; j++){
-      if(newScore.score > scores[j].score){
+      if(parseInt(newScore.score) > parseInt(scores[j].score)){
         scores.splice(j, 0, newScore);
         scoreAjoute = true;
         break;
       } 
     }
-    if(j<=10 && !scoreAjoute){
+    if(j<=size && !scoreAjoute){
       scores.push(newScore);
     }
     if(scores.length === size && scoreAjoute) scores.pop;

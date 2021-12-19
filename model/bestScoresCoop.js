@@ -46,14 +46,12 @@ class BestScoresCoop {
    * @returns {object} the score found or undefined if the id does not lead to a score
    */
   async getOne(username1, username2) {
-    console.log("On passe dans getOne");
     const scores = parse(this.jsonDbPath, this.defaultdefaultBestScoresCoopcores);
     var foundIndex = scores.findIndex((score) => score.username1 == username1 || score.username2 == username2);
     if (foundIndex < 0) {
       foundIndex = scores.findIndex((score) => score.username2 == username1 || score.username1 == username2);
       if (foundIndex < 0) return;
     }
-    console.log(" getOne : ",scores[foundIndex]);
     return scores[foundIndex];
   }
 
@@ -64,7 +62,6 @@ class BestScoresCoop {
    */
 
   async addOne(body) {
-    console.log("On passe dans addOne");
     var scores = parse(this.jsonDbPath, this.defaultBestScoresCoop);
    
     const newScore = {
@@ -81,18 +78,17 @@ class BestScoresCoop {
     var j;
     var scoreAjoute = false;
     for(j = 0; j < scores.length; j++){
-      if(newScore.score > scores[j].score){
+      if(parseInt(newScore.score) > parseInt(scores[j].score)){
         scores.splice(j, 0, newScore);
         scoreAjoute = true;
         break;
       } 
     }
-    if(j<=10 && !scoreAjoute){
+    if(j<=size && !scoreAjoute){
       scores.push(newScore);
     }
     if(scores.length === size && scoreAjoute) scores.pop;
     serialize(this.jsonDbPath, scores);
-    console.log(" addOne : ", newScore);
     return newScore;
   }
 
