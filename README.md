@@ -1,6 +1,6 @@
 
 # To install this API on your machine 
-clone it
+clone it and then use the following commands
 `npm i`
 `npm i -g nodemon`
 `npm i jsonwebtoken`
